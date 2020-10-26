@@ -8,8 +8,10 @@ from keras.layers import Dense
 import matplotlib.pyplot as plt
 from keras.optimizers import Adam
 
-env = Paddle()
-np.random.seed(0)
+from log_util import log_fn
+
+
+is_print = True
 
 
 class DQN:
@@ -17,7 +19,6 @@ class DQN:
     """ Implementation of deep q learning algorithm """
 
     def __init__(self, action_space, state_space):
-
         self.action_space = action_space
         self.state_space = state_space
         self.epsilon = 1
@@ -30,11 +31,11 @@ class DQN:
         self.model = self.build_model()
 
     def build_model(self):
-
         model = Sequential()
-        model.add(Dense(64, input_shape=(self.state_space,), activation='relu'))
+        model.add(Dense(64, input_shape=(self.state_space,), activation='relu'))  # Input is state space.
         model.add(Dense(64, activation='relu'))
-        model.add(Dense(self.action_space, activation='linear'))
+        model.add(Dense(self.action_space, activation='linear'))  # Output is the predicted action from action space.
+
         model.compile(loss='mse', optimizer=Adam(lr=self.learning_rate))
         return model
 
@@ -42,14 +43,13 @@ class DQN:
         self.memory.append((state, action, reward, next_state, done))
 
     def act(self, state):
-
+        # Apply epsilon-greedy policy
         if np.random.rand() <= self.epsilon:
             return random.randrange(self.action_space)
         act_values = self.model.predict(state)
         return np.argmax(act_values[0])
 
     def replay(self):
-
         if len(self.memory) < self.batch_size:
             return
 
@@ -75,7 +75,6 @@ class DQN:
 
 
 def train_dqn(episode):
-
     loss = []
 
     action_space = 3
@@ -89,13 +88,14 @@ def train_dqn(episode):
         score = 0
         for i in range(max_steps):
             action = agent.act(state)
-            reward, next_state, done = env.step(action)
+            log_fn('action: {}'.format(action), is_print)
+            reward, next_state, episode_done = env.step(action)
             score += reward
             next_state = np.reshape(next_state, (1, state_space))
-            agent.remember(state, action, reward, next_state, done)
+            agent.remember(state, action, reward, next_state, episode_done)
             state = next_state
             agent.replay()
-            if done:
+            if episode_done:
                 print("episode: {}/{}, score: {}".format(e, episode, score))
                 break
         loss.append(score)
@@ -103,6 +103,8 @@ def train_dqn(episode):
 
 
 if __name__ == '__main__':
+    env = Paddle()
+    np.random.seed(0)
 
     ep = 100
     loss = train_dqn(ep)
