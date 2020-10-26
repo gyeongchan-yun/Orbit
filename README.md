@@ -1,17 +1,19 @@
 # Orbit
 
-Orbit is a open-source project and a collection of reinforcement learning environments. If you want to contribute to this project by creating your own environment then please drop a mail to shivajbd@gmail.com. You can know how to create an environment through [this](https://towardsdatascience.com/create-your-own-reinforcement-learning-environment-beb12f4151ef) blog: 
+Orbit is a open-source project and a collection of reinforcement learning environments. 
+Original repo is [here](https://github.com/shivaverma/Orbit).
 
 ### Requirements
 
 - **`python`** - `3.7`
 - **`keras`** -  `2.4.3`
 - **`tensorflow`** -  `2.2.0`
+    ```
+    $ pip install -r requirements.txt
+    ```
 
-Checkout `random_policy.py` to see how to use an environment. 
-
-Orbit contains following RL environments as of today.
-
+Checkout `random_policy.py`  and `DQN_agent.py` to see how to use an environment.
+ 
 ---
 
 # Environment 1: Paddle
@@ -19,6 +21,11 @@ Orbit contains following RL environments as of today.
 ### Author: [Shiva Verma](https://www.linkedin.com/in/shiva-verma/)
 
 The task is to take the ball on paddle. Inbuilt `turtle` library is used to create the environment.
+
+### Quick start
+```
+$ python DQN_agent.py --env=Paddle
+```
 
 <img src=Paddle/wall.gif width="400">
 
@@ -50,6 +57,11 @@ The task is to take the ball on paddle. Inbuilt `turtle` library is used to crea
 
 The task to dodge the kangaroo from moving balls. Inbuilt `turtle` library is used to create the environment.
 
+### Quick start
+```
+$ python DQN_agent.py --env=Jump
+```
+
 <img src=Jump/wall.gif width="600">
 
 **Action space (2)**
@@ -78,6 +90,11 @@ The task to dodge the kangaroo from moving balls. Inbuilt `turtle` library is us
 
 The task to hit the dropping balls. `pygame` library is used to create the environment.
 
+### Quick start
+```
+$ python DQN_agent.py --env=Cannon
+```
+
 <img src=Cannon/wall.gif width="400">
 
 **Action space (4)**
@@ -103,3 +120,10 @@ The task to hit the dropping balls. `pygame` library is used to create the envir
 **Episode termination**
 
 - Episode ends when a ball touchs the line.
+
+# Issues
+
+If `module not found ` error happens, set PYTHONPATH environment variable to the project path.
+```
+$ set PYTHONPATH=${repo root dir} ; set PYTHONPATH=${repo root dir/Cannon}
+```
