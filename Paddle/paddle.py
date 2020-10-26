@@ -141,6 +141,12 @@ class Paddle():
     - The velocity of the ball in the x, y-axis.
     """
 
+    def get_action_space(self):
+        return 3
+
+    def get_state_space(self):
+        return 5
+
     def reset(self):
         self.paddle.goto(0, -275)
         self.ball.goto(0, 100)

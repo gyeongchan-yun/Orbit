@@ -3,6 +3,10 @@ import os
 from random import randint
 from math import sin, cos, pi , inf
 
+
+CUR_DIR = os.path.dirname(os.path.abspath(__file__))
+
+
 # rotate a image
 def rotate(surface, angle, pivot, offset):
 	"""Rotate the surface around the pivot point.
@@ -32,7 +36,7 @@ class Plank:
 		self.rect = pygame.Rect(0, 0, self.PLANK_WIDTH, self.PLANK_HEIGHT)
 		self.rect.center = (WIN_WIDTH/2, WIN_HEIGHT-50)
 		self.cannon = pygame.transform.scale(
-			pygame.image.load(os.path.join('assets', 'imgs', 'cannon.png')),
+			pygame.image.load(os.path.join(CUR_DIR, 'imgs', 'cannon.png')),
 			(80, 110)
 		)
 

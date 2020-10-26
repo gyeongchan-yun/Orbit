@@ -1,14 +1,17 @@
 # Author: Vinod Kumar
 
-
+import sys
+import os
 import random
 import turtle as t
+
+CUR_DIR = os.path.dirname(os.path.abspath(__file__))
 
 
 class Jump:
 
     def __init__(self):
-        self.kangaroo = 'assets/kangaroo.gif'
+        self.kangaroo = os.path.join(CUR_DIR, 'assets/kangaroo.gif')
         self.screen_width = 900
         self.screen_length = 400
         self.episode_done = False
@@ -168,6 +171,12 @@ class Jump:
 
     # 0 do nothing
     # 1 jump
+
+    def get_action_space(self):
+        return 2
+
+    def get_state_space(self):
+        return 13
 
     def reset(self):
         self.reset_obs()

@@ -7,6 +7,7 @@ from assets.objects import Ball, Bullet, Plank, rotate
 from math import sin, cos, pi , inf
 # Game environment class
 
+
 class Cannon:
 	WIN_WIDTH = 600
 	WIN_HEIGHT = 600
@@ -136,7 +137,12 @@ class Cannon:
 				pygame.display.update()     # renders the new frame
 		pygame.quit()
 
-	# reset the
+	def get_action_space(self):
+		return 4
+
+	def get_state_space(self):
+		return 8
+
 	def reset(self):
 		self.plank.__init__(self.WIN_WIDTH, self.WIN_HEIGHT)
 		self.angle = 0
