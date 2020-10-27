@@ -120,9 +120,15 @@ def train_dqn(episodes, env, args):
     return loss
 
 
-if __name__ == '__main__':
-    args = parser.parse_args()
+def draw_plot(ep, loss):
+    plt.plot([i for i in range(ep)], loss)
+    plt.xlabel('episodes')
+    plt.ylabel('reward')
+    plt.show()
 
+
+def main():
+    args = parser.parse_args()
     if args.env == 'Paddle':
         env = Paddle()
     elif args.env == 'Jump':
@@ -133,10 +139,11 @@ if __name__ == '__main__':
         raise ValueError('No such environment: {}'.format(args.env))
 
     np.random.seed(0)
-
     ep = args.num_episodes
     loss = train_dqn(ep, env, args)
-    plt.plot([i for i in range(ep)], loss)
-    plt.xlabel('episodes')
-    plt.ylabel('reward')
-    plt.show()
+
+    draw_plot(ep, loss)
+
+
+if __name__ == '__main__':
+    main()
