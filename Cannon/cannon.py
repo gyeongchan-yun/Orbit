@@ -4,19 +4,19 @@ import pygame
 import sys
 from pygame.locals import QUIT, KEYDOWN, K_ESCAPE, K_LEFT, K_RIGHT, K_SPACE, K_a, K_d
 from assets.objects import Ball, Bullet, Plank, rotate
-from math import sin, cos, pi , inf
-# Game environment class
+from math import sin, cos, pi, inf
 
 
 class Cannon:
 	WIN_WIDTH = 600
 	WIN_HEIGHT = 600
 	FPS = 30
+	LIVES = 1  # The number of chance to keep going the game.
 
-	def __init__(self,graphics=True):
+	def __init__(self):
 		pygame.font.init()
 		pygame.init()
-		self.graphics = graphics
+		self.graphics = True
 		self.STAT_FONT = pygame.font.SysFont("comicsans", 30)
 		self.clock = pygame.time.Clock()
 		pygame.display.set_caption("Cannon")
@@ -25,7 +25,7 @@ class Cannon:
 		self.playing = False
 		self.plank = Plank(self.WIN_WIDTH, self.WIN_HEIGHT)
 		self.angle = 0
-		self.lives = LIVES
+		self.lives = self.LIVES
 		self.score = 0
 		self.balls = list()
 		for i in range(3):
@@ -36,12 +36,13 @@ class Cannon:
 		self.bullets = list()
 		self.shoot_counter = 10
 
-	# drawing all the objects to screen(WIN)
-
 	def draw_frame(self):
+		"""drawing all the objects to screen(WIN)"""
 		self.WIN.fill((0, 0, 0))
-		pygame.draw.line(self.WIN, (100, 100, 100), (0,
-													 self.WIN_HEIGHT-150), (self.WIN_WIDTH, self.WIN_HEIGHT-150))
+		pygame.draw.line(self.WIN,
+			(100, 100, 100),
+			(0, self.WIN_HEIGHT-150),
+			(self.WIN_WIDTH, self.WIN_HEIGHT-150))
 		for ball in self.balls:
 			ball.draw(self.WIN)
 		for bullet in self.bullets:
@@ -53,8 +54,8 @@ class Cannon:
 
 		self.WIN.blit(score_label, ((self.WIN_WIDTH - score_label.get_width())/2, 10))
 
-	# game logic runs in this fuction for each frame
 	def game_loop(self):
+		"""game logic runs in this function for each frame"""
 		hit = False
 		life_down = False
 
@@ -112,7 +113,6 @@ class Cannon:
 	def play(self):
 		self.playing = True
 		while True:
-
 			self.clock.tick(self.FPS)
 
 			hit, life_down = self.game_loop()
@@ -135,7 +135,6 @@ class Cannon:
 			if self.graphics:
 				self.draw_frame()           # generates new frame
 				pygame.display.update()     # renders the new frame
-		pygame.quit()
 
 	def get_action_space(self):
 		return 4
@@ -171,9 +170,8 @@ class Cannon:
 		return state
 
 	def step(self, action):
-
 		self.reward = 0
-		self.done = 0
+		self.episode_done = False
 
 		# left
 		if action == 0:
@@ -206,7 +204,7 @@ class Cannon:
 		if life_down:
 			self.reward -= 5
 		if self.lives <= 0:
-			self.done = True
+			self.episode_done = True
 
 		
 		ball_cor = list()
@@ -224,11 +222,9 @@ class Cannon:
 			self.draw_frame()           # generates new frame
 			pygame.display.update()     # renders the new frame
 
-		return self.reward, state, self.done
+		return self.reward, state, self.episode_done
 
-
-LIVES = 1
 
 if __name__ == '__main__':
-	env = Cannon(graphics=True)
+	env = Cannon()
 	env.play()
